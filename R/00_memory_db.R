@@ -1,12 +1,13 @@
 #' ---
 #' title: Tietokantahommat kätevästi R:llä
 #' output: github_document
+#' author: Pasi Haapakorva
 #' ---
 
-#' Demoan lyhyesti tietokantayhtyettä R:llä. Ladataan ensin paketit.
-#'
-#' R:ssä tietokantataulujen käsittely on parhaimmillaan hyvin kätevää,
+#' Demoan lyhyesti tietokantayhtyettä R:llä. R:ssä tietokantataulujen käsittely on parhaimmillaan hyvin kätevää,
 #' koska käytössä ovat valmiiksi tutut `dplyr`-verbit.
+#'
+#' Ladataan ensin paketit.
 
 #+ koodia, message=FALSE, warning=FALSE
 library(DBI)

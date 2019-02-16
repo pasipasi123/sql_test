@@ -1,12 +1,13 @@
 Tietokantahommat kätevästi R:llä
 ================
-pasih
-Sat Feb 16 20:03:34 2019
+Pasi Haapakorva
+Sat Feb 16 20:08:58 2019
 
-Demoan lyhyesti tietokantayhtyettä R:llä. Ladataan ensin paketit.
+Demoan lyhyesti tietokantayhtyettä R:llä. R:ssä tietokantataulujen
+käsittely on parhaimmillaan hyvin kätevää, koska käytössä ovat
+valmiiksi tutut `dplyr`-verbit.
 
-R:ssä tietokantataulujen käsittely on parhaimmillaan hyvin kätevää,
-koska käytössä ovat valmiiksi tutut `dplyr`-verbit.
+Ladataan ensin paketit.
 
 ``` r
 library(DBI)

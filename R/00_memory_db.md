@@ -1,7 +1,7 @@
 Tietokantahommat kätevästi R:llä
 ================
-pasih
-Sat Feb 16 20:01:14 2019
+Pasi Haapakorva
+Sat Feb 16 20:08:24 2019
 
 Demoan lyhyesti tietokantayhtyettä R:llä. Ladataan ensin paketit.
 
