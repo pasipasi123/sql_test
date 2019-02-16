@@ -601,7 +601,7 @@ body {
 <body>
 
 <h1 id="tietokantahommat-kätevästi-rllä">Tietokantahommat kätevästi R:llä</h1>
-<p>Pasi Haapakorva Sat Feb 16 20:08:58 2019</p>
+<p>Pasi Haapakorva Sat Feb 16 21:04:51 2019</p>
 <p>Demoan lyhyesti tietokantayhtyettä R:llä. R:ssä tietokantataulujen käsittely on parhaimmillaan hyvin kätevää, koska käytössä ovat valmiiksi tutut <code>dplyr</code>-verbit.</p>
 <p>Ladataan ensin paketit.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(DBI)</a>
@@ -609,7 +609,7 @@ body {
 <p>Luodaan muistiin SQLite-tietokanta.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">dbcon &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(RSQLite<span class="op">::</span><span class="kw">SQLite</span>(), <span class="st">&quot;:memory:&quot;</span>)</a></code></pre></div>
 <p>Lisätään kantaan <code>mtcars</code>-taulu.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">dbWriteTable</span>(dbcon, <span class="st">&quot;mtcars&quot;</span>, mtcars)</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">dbWriteTable</span>(dbcon, <span class="st">&quot;mtcars&quot;</span>, mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as_tibble</span>(<span class="dt">rownames =</span> <span class="st">&quot;name&quot;</span>))</a>
 <a class="sourceLine" id="cb3-2" title="2"></a>
 <a class="sourceLine" id="cb3-3" title="3"><span class="kw">dbListTables</span>(dbcon)</a></code></pre></div>
 <pre><code>## [1] &quot;mtcars&quot;
@@ -628,7 +628,7 @@ body {
 ## 2     6     19.7
 ## 3     8     15.1
 </code></pre>
-<p>dplyristä saa tarvittaessa ulos, esimerkiksi muille jaettavaksi, SQL-queryn.</p>
+<p><code>dplyr</code>:stä saa tarvittaessa ulos, esimerkiksi muille jaettavaksi, SQL-queryn.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">mtcars_db <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb8-2" title="2"><span class="st">  </span><span class="kw">group_by</span>(cyl) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb8-3" title="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_mpg =</span> <span class="kw">mean</span>(mpg, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span></a>
@@ -638,6 +638,65 @@ body {
 ## FROM `mtcars`
 ## GROUP BY `cyl`
 </code></pre>
+<p>Tietokantataulusta saadaan helposti myös paikallinen kopio.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">(mtcars_local &lt;-<span class="st"> </span><span class="kw">dbReadTable</span>(dbcon, <span class="st">&quot;mtcars&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="st">  </span><span class="kw">as_tibble</span>())</a></code></pre></div>
+<pre><code>## # A tibble: 32 x 12
+##    name     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+##    &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 Mazda~  21       6  160    110  3.9   2.62  16.5     0     1     4     4
+##  2 Mazda~  21       6  160    110  3.9   2.88  17.0     0     1     4     4
+##  3 Datsu~  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
+##  4 Horne~  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
+##  5 Horne~  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
+##  6 Valia~  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
+##  7 Duste~  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
+##  8 Merc ~  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
+##  9 Merc ~  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
+## 10 Merc ~  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
+## # ... with 22 more rows
+</code></pre>
+<p>Tai sitten voidaan ottaa vain siivu.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">dbGetQuery</span>(dbcon, <span class="st">&quot;SELECT * FROM mtcars WHERE cyl &gt; 4 AND mpg &gt; 20&quot;</span>)</a></code></pre></div>
+<pre><code>##             name  mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## 1      Mazda RX4 21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## 2  Mazda RX4 Wag 21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## 3 Hornet 4 Drive 21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+</code></pre>
+<p><code>dbplyr</code>-paketissa on tietokantoja varten metodit <code>dplyr</code>:n liitosfunktioille.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">library</span>(dbplyr)</a></code></pre></div>
+<p>Tehdään simppeli data.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">join_data &lt;-<span class="st"> </span><span class="kw">tribble</span>(</a>
+<a class="sourceLine" id="cb15-2" title="2">  <span class="op">~</span>cyl, <span class="op">~</span>teksti,</a>
+<a class="sourceLine" id="cb15-3" title="3">  <span class="dv">4</span>,    <span class="st">&quot;neljä&quot;</span>,</a>
+<a class="sourceLine" id="cb15-4" title="4">  <span class="dv">6</span>,    <span class="st">&quot;kuusi&quot;</span>,</a>
+<a class="sourceLine" id="cb15-5" title="5">  <span class="dv">8</span>,    <span class="st">&quot;kahdeksan&quot;</span></a>
+<a class="sourceLine" id="cb15-6" title="6">)</a></code></pre></div>
+<p>Liitetään <code>join_data</code> referenssitauluun ja tallennetaan se kantaan.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">mtcars_db <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="st">  </span><span class="kw">left_join</span>(join_data, <span class="dt">copy =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="st">  </span><span class="kw">copy_to</span>(<span class="dt">dest =</span> dbcon, <span class="dt">name =</span> <span class="st">&quot;mtcars_join&quot;</span>)</a>
+<a class="sourceLine" id="cb16-4" title="4"></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="kw">dbReadTable</span>(dbcon, <span class="st">&quot;mtcars_join&quot;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-6" title="6"><span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-7" title="7"><span class="st">  </span><span class="kw">select</span>(name, cyl, teksti)</a></code></pre></div>
+<pre><code>## # A tibble: 32 x 3
+##    name                cyl teksti   
+##    &lt;chr&gt;             &lt;dbl&gt; &lt;chr&gt;    
+##  1 Mazda RX4             6 kuusi    
+##  2 Mazda RX4 Wag         6 kuusi    
+##  3 Datsun 710            4 neljä    
+##  4 Hornet 4 Drive        6 kuusi    
+##  5 Hornet Sportabout     8 kahdeksan
+##  6 Valiant               6 kuusi    
+##  7 Duster 360            8 kahdeksan
+##  8 Merc 240D             4 neljä    
+##  9 Merc 230              4 neljä    
+## 10 Merc 280              6 kuusi    
+## # ... with 22 more rows
+</code></pre>
+<p>Suljetaan yhteys.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">dbDisconnect</span>(dbcon)</a></code></pre></div>
 
 </body>
 </html>
