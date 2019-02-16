@@ -600,15 +600,15 @@ body {
 
 <body>
 
-<h1 id="tietokantahommat-kãtevãsti-rllã">Tietokantahommat kÃ¤tevÃ¤sti R:llÃ¤</h1>
-<p>pasih Sat Feb 16 20:01:33 2019</p>
-<p>Demoan lyhyesti tietokantayhtyettÃ¤ R:llÃ¤. Ladataan ensin paketit.</p>
-<p>R:ssÃ¤ tietokantataulujen kÃ¤sittely on parhaimmillaan hyvin kÃ¤tevÃ¤Ã¤, koska kÃ¤ytÃ¶ssÃ¤ ovat valmiiksi tutut <code>dplyr</code>-verbit.</p>
+<h1 id="tietokantahommat-kätevästi-rllä">Tietokantahommat kätevästi R:llä</h1>
+<p>pasih Sat Feb 16 20:03:34 2019</p>
+<p>Demoan lyhyesti tietokantayhtyettä R:llä. Ladataan ensin paketit.</p>
+<p>R:ssä tietokantataulujen käsittely on parhaimmillaan hyvin kätevää, koska käytössä ovat valmiiksi tutut <code>dplyr</code>-verbit.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(DBI)</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(dplyr)</a></code></pre></div>
 <p>Luodaan muistiin SQLite-tietokanta.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">dbcon &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(RSQLite<span class="op">::</span><span class="kw">SQLite</span>(), <span class="st">&quot;:memory:&quot;</span>)</a></code></pre></div>
-<p>LisÃ¤tÃ¤Ã¤n kantaan <code>mtcars</code>-taulu.</p>
+<p>Lisätään kantaan <code>mtcars</code>-taulu.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">dbWriteTable</span>(dbcon, <span class="st">&quot;mtcars&quot;</span>, mtcars)</a>
 <a class="sourceLine" id="cb3-2" title="2"></a>
 <a class="sourceLine" id="cb3-3" title="3"><span class="kw">dbListTables</span>(dbcon)</a></code></pre></div>
@@ -616,7 +616,7 @@ body {
 </code></pre>
 <p>Luodaan tietokannan <code>mtcars</code>-taulusta referenssi.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">mtcars_db &lt;-<span class="st"> </span><span class="kw">tbl</span>(dbcon, <span class="st">&quot;mtcars&quot;</span>)</a></code></pre></div>
-<p>TehdÃ¤Ã¤n kevyttÃ¤ laskentaa.</p>
+<p>Tehdään kevyttä laskentaa.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">mtcars_db <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-2" title="2"><span class="st">  </span><span class="kw">group_by</span>(cyl) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-3" title="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_mpg =</span> <span class="kw">mean</span>(mpg, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
@@ -628,7 +628,7 @@ body {
 ## 2     6     19.7
 ## 3     8     15.1
 </code></pre>
-<p>dplyristÃ¤ saa tarvittaessa ulos, esimerkiksi muille jaettavaksi, SQL-queryn.</p>
+<p>dplyristä saa tarvittaessa ulos, esimerkiksi muille jaettavaksi, SQL-queryn.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">mtcars_db <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb8-2" title="2"><span class="st">  </span><span class="kw">group_by</span>(cyl) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb8-3" title="3"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_mpg =</span> <span class="kw">mean</span>(mpg, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span></a>

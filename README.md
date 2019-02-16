@@ -1,12 +1,12 @@
-Tietokantahommat kÃ¤tevÃ¤sti R:llÃ¤
+Tietokantahommat kätevästi R:llä
 ================
 pasih
-Sat Feb 16 20:01:33 2019
+Sat Feb 16 20:03:34 2019
 
-Demoan lyhyesti tietokantayhtyettÃ¤ R:llÃ¤. Ladataan ensin paketit.
+Demoan lyhyesti tietokantayhtyettä R:llä. Ladataan ensin paketit.
 
-R:ssÃ¤ tietokantataulujen kÃ¤sittely on parhaimmillaan hyvin kÃ¤tevÃ¤Ã¤,
-koska kÃ¤ytÃ¶ssÃ¤ ovat valmiiksi tutut `dplyr`-verbit.
+R:ssä tietokantataulujen käsittely on parhaimmillaan hyvin kätevää,
+koska käytössä ovat valmiiksi tutut `dplyr`-verbit.
 
 ``` r
 library(DBI)
@@ -19,7 +19,7 @@ Luodaan muistiin SQLite-tietokanta.
 dbcon <- dbConnect(RSQLite::SQLite(), ":memory:")
 ```
 
-LisÃ¤tÃ¤Ã¤n kantaan `mtcars`-taulu.
+Lisätään kantaan `mtcars`-taulu.
 
 ``` r
 dbWriteTable(dbcon, "mtcars", mtcars)
@@ -35,7 +35,7 @@ Luodaan tietokannan `mtcars`-taulusta referenssi.
 mtcars_db <- tbl(dbcon, "mtcars")
 ```
 
-TehdÃ¤Ã¤n kevyttÃ¤ laskentaa.
+Tehdään kevyttä laskentaa.
 
 ``` r
 mtcars_db %>%
@@ -51,7 +51,7 @@ mtcars_db %>%
     ## 2     6     19.7
     ## 3     8     15.1
 
-dplyristÃ¤ saa tarvittaessa ulos, esimerkiksi muille jaettavaksi,
+dplyristä saa tarvittaessa ulos, esimerkiksi muille jaettavaksi,
 SQL-queryn.
 
 ``` r
