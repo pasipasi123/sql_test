@@ -1,7 +1,7 @@
 Tietokantahommat kätevästi R:llä
 ================
 Pasi Haapakorva
-Sat Feb 16 21:04:51 2019
+Sat Feb 16 21:19:12 2019
 
 Demoan lyhyesti tietokantayhtyettä R:llä. R:ssä tietokantataulujen
 käsittely on parhaimmillaan hyvin kätevää, koska käytössä ovat
@@ -108,43 +108,28 @@ liitosfunktioille.
 library(dbplyr)
 ```
 
-Tehdään simppeli data.
+Lisätään kantaan tällä kertaa `dplyr::copy_to()`:lla kaksi taulua,
+joista jää tilapäiset yhteydet.
 
 ``` r
-join_data <- tribble(
-  ~cyl, ~teksti,
-  4,    "neljä",
-  6,    "kuusi",
-  8,    "kahdeksan"
-)
+members <- copy_to(dbcon, band_members, "members")
+instruments <- copy_to(dbcon, band_instruments, "instruments")
 ```
 
-Liitetään `join_data` referenssitauluun ja tallennetaan se kantaan.
+Voidaan tehdä liitos.
 
 ``` r
-mtcars_db %>%
-  left_join(join_data, copy = TRUE) %>%
-  copy_to(dest = dbcon, name = "mtcars_join")
-
-dbReadTable(dbcon, "mtcars_join") %>%
-  as_tibble() %>%
-  select(name, cyl, teksti)
+members %>%
+  left_join(instruments)
 ```
 
-    ## # A tibble: 32 x 3
-    ##    name                cyl teksti   
-    ##    <chr>             <dbl> <chr>    
-    ##  1 Mazda RX4             6 kuusi    
-    ##  2 Mazda RX4 Wag         6 kuusi    
-    ##  3 Datsun 710            4 neljä    
-    ##  4 Hornet 4 Drive        6 kuusi    
-    ##  5 Hornet Sportabout     8 kahdeksan
-    ##  6 Valiant               6 kuusi    
-    ##  7 Duster 360            8 kahdeksan
-    ##  8 Merc 240D             4 neljä    
-    ##  9 Merc 230              4 neljä    
-    ## 10 Merc 280              6 kuusi    
-    ## # ... with 22 more rows
+    ## # Source:   lazy query [?? x 3]
+    ## # Database: sqlite 3.22.0 [:memory:]
+    ##   name  band    plays 
+    ##   <chr> <chr>   <chr> 
+    ## 1 Mick  Stones  <NA>  
+    ## 2 John  Beatles guitar
+    ## 3 Paul  Beatles bass
 
 Suljetaan yhteys.
 

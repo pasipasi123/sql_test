@@ -51,26 +51,17 @@ dbGetQuery(dbcon, "SELECT * FROM mtcars WHERE cyl > 4 AND mpg > 20")
 
 #' `dbplyr`-paketissa on tietokantoja varten metodit `dplyr`:n liitosfunktioille.
 
-#+ koodia 2, message=FALSE, warning=FALSE
+#+ koodia2, message=FALSE, warning=FALSE
 library(dbplyr)
 
-#' Tehdään simppeli data.
-join_data <- tribble(
-  ~cyl, ~teksti,
-  4,    "neljä",
-  6,    "kuusi",
-  8,    "kahdeksan"
-)
+#' Lisätään kantaan tällä kertaa `dplyr::copy_to()`:lla kaksi taulua, joista jää tilapäiset yhteydet.
+members <- copy_to(dbcon, band_members, "members")
+instruments <- copy_to(dbcon, band_instruments, "instruments")
 
-#' Liitetään `join_data` referenssitauluun ja tallennetaan se kantaan.
-#+ koodia 3, message=FALSE, warning=FALSE
-mtcars_db %>%
-  left_join(join_data, copy = TRUE) %>%
-  copy_to(dest = dbcon, name = "mtcars_join")
-
-dbReadTable(dbcon, "mtcars_join") %>%
-  as_tibble() %>%
-  select(name, cyl, teksti)
+#' Voidaan tehdä liitos.
+#+ koodia3, message=FALSE
+members %>%
+  left_join(instruments)
 
 #' Suljetaan yhteys.
 dbDisconnect(dbcon)
