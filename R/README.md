@@ -1,7 +1,7 @@
 Tietokantahommat kätevästi R:llä
 ================
 Pasi Haapakorva
-Sat Feb 16 21:01:45 2019
+Sat Feb 16 21:03:15 2019
 
 Demoan lyhyesti tietokantayhtyettä R:llä. R:ssä tietokantataulujen
 käsittely on parhaimmillaan hyvin kätevää, koska käytössä ovat
