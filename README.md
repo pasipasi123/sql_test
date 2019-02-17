@@ -1,7 +1,7 @@
 Tietokantahommat kätevästi R:llä
 ================
 Pasi Haapakorva
-Sat Feb 16 21:19:12 2019
+Sun Feb 17 20:19:31 2019
 
 Demoan lyhyesti tietokantayhtyettä R:llä. R:ssä tietokantataulujen
 käsittely on parhaimmillaan hyvin kätevää, koska käytössä ovat
@@ -23,7 +23,7 @@ dbcon <- dbConnect(RSQLite::SQLite(), ":memory:")
 Lisätään kantaan `mtcars`-taulu.
 
 ``` r
-dbWriteTable(dbcon, "mtcars", mtcars %>% as_tibble(rownames = "name"))
+dbWriteTable(dbcon, "mtcars", mtcars %>% rownames_to_column("name"))
 
 dbListTables(dbcon)
 ```
