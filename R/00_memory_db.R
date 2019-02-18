@@ -19,7 +19,7 @@ dbcon <- dbConnect(RSQLite::SQLite(), ":memory:")
 
 #' Lisätään kantaan `mtcars`-taulu.
 
-dbWriteTable(dbcon, "mtcars", mtcars %>% rownames_to_column("name"))
+dbWriteTable(dbcon, "mtcars", mtcars %>% tibble::rownames_to_column("name"))
 
 dbListTables(dbcon)
 

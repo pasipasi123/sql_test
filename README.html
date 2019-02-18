@@ -601,7 +601,7 @@ body {
 <body>
 
 <h1 id="tietokantahommat-kätevästi-rllä">Tietokantahommat kätevästi R:llä</h1>
-<p>Pasi Haapakorva Sun Feb 17 20:19:31 2019</p>
+<p>Pasi Haapakorva Mon Feb 18 17:37:36 2019</p>
 <p>Demoan lyhyesti tietokantayhtyettä R:llä. R:ssä tietokantataulujen käsittely on parhaimmillaan hyvin kätevää, koska käytössä ovat valmiiksi tutut <code>dplyr</code>-verbit.</p>
 <p>Ladataan ensin paketit.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(DBI)</a>
@@ -609,7 +609,7 @@ body {
 <p>Luodaan muistiin SQLite-tietokanta.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">dbcon &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(RSQLite<span class="op">::</span><span class="kw">SQLite</span>(), <span class="st">&quot;:memory:&quot;</span>)</a></code></pre></div>
 <p>Lisätään kantaan <code>mtcars</code>-taulu.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">dbWriteTable</span>(dbcon, <span class="st">&quot;mtcars&quot;</span>, mtcars <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rownames_to_column</span>(<span class="st">&quot;name&quot;</span>))</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">dbWriteTable</span>(dbcon, <span class="st">&quot;mtcars&quot;</span>, mtcars <span class="op">%&gt;%</span><span class="st"> </span>tibble<span class="op">::</span><span class="kw">rownames_to_column</span>(<span class="st">&quot;name&quot;</span>))</a>
 <a class="sourceLine" id="cb3-2" title="2"></a>
 <a class="sourceLine" id="cb3-3" title="3"><span class="kw">dbListTables</span>(dbcon)</a></code></pre></div>
 <pre><code>## [1] &quot;mtcars&quot;
